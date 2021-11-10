@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "command_processor.h"
+#include "hexdump.h"
 
 
 
@@ -54,8 +55,12 @@ void author_handler(int argc, char *argv[])
 void dump_handler(int argc, char *argv[])
 {
 
-	printf("\n\r hexdump");
+	if(str == NULL)
+		return;
+	char *s = str;
 
+
+	printf("\n\rHEXDUMP");
 }
 
 

@@ -1,0 +1,4 @@
+command_processor.c:20:6:author_handler	16	static
+command_processor.c:26:6:dump_handler	16	static
+command_processor.c:62:6:command_processor_start	112	static
+command_processor.c:94:6:process_command	88	static

@@ -17,17 +17,44 @@
 typedef void (*command_handler_t)(int, char *argv[]);
 
 
+
+/* This function is the handler for author command.
+ * This function prints the authors name
+ *
+ * Parameters:
+ * 	argc and argv
+ *
+ * Returns:
+ * None
+ *
+ *
+ * */
 void author_handler(int argc, char *argv[])
 {
 	printf("\n\rKevin Tom");
 }
 
 
+
+
+
+
+
+/* This function is the handler for author command.
+ * This function prints the authors name
+ *
+ * Parameters:
+ * 	argc and argv
+ *
+ * Returns:
+ * None
+ *
+ *
+ * */
 void dump_handler(int argc, char *argv[])
 {
-	if(argv == NULL)
-		return;
 
+	printf("\n\r hexdump");
 
 }
 
@@ -123,8 +150,8 @@ void process_command(char *input)
   }
 
 
-  for(int i=0;i<argc;i++)
-	  printf("\n\rArgv[%d] : %c",i,*argv[i]);
+ /* for(int i=0;i<argc;i++)
+	  printf("\n\rArgv[%d] : %c",i,*argv[i]);*/
 
 
   argv[argc] = NULL;
@@ -141,14 +168,8 @@ void process_command(char *input)
       break;
     }
     else
-    {
-    	printf("\n\rUnknown Command: ");
-    	for(char j=*argv[0]; j != '\0'; j++)
-    	{
-    		printf("%c",j);
-    	}
+    {									//Reason for hexdump get a unknow command at first
+    	printf("\n\rUnknown Command: "); //For first check it will say unknow command, then it will check second it will find match
     }
-
-
   }
 }

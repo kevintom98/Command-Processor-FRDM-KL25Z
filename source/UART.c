@@ -6,7 +6,6 @@
  */
 
 
-
 #include <stdio.h>
 #include "UART.h"
 #include "cbfifo.h"
@@ -76,29 +75,7 @@ void Init_UART0(uint32_t baud_rate)
 
 }
 
-/*void Send_String(uint8_t * str) {
-	uint8_t *a = NULL;
-	// enqueue string
-	while (*str != '\0') { // copy characters up to null terminator
-		//while (q[TX_Buffer].full == 1 )
-		//	; // wait for space to open up
-		//Q_Enqueue(&TxQ, *str);
 
-		while(cbfifo_enqueue(str, 1, TX_Buffer) != 1)
-		{
-			;
-		}
-		str++;
-	}
-	// start transmitter if it isn't already running
-	if (!(UART0->C2 & UART0_C2_TIE_MASK)) {
-		//UART0->D = Q_Dequeue(&TxQ);
-		cbfifo_dequeue(a, 1, TX_Buffer);
-
-		UART0->D = *a;
-		UART0->C2 |= UART0_C2_TIE(1);
-	}
-}*/
 
 // UART0 IRQ Handler. Listing 8.12 on p. 235
 void UART0_IRQHandler(void)
@@ -122,23 +99,19 @@ void UART0_IRQHandler(void)
 
 		UART0->D = ch; //Echoing back the character
 
-		if((cbfifo_is_full(RX_Buffer)) == 0)
+		if(cbfifo_enqueue(&ch,1,RX_Buffer) == 1)
 		{
-			cbfifo_enqueue(&ch,1,RX_Buffer);
+			;
 		}
-		else
-		{
-			//discard character
-		}
+		//If not discard
 	}
 
 	if ( (UART0->C2 & UART0_C2_TIE_MASK) &&    // transmitter interrupt enabled
 			(UART0->S1 & UART0_S1_TDRE_MASK) ) //If transmit data buffer is empty
 	{
 		// checking if tx buffer empty
-		if(cbfifo_is_empty(TX_Buffer) == 0)
+		if(cbfifo_dequeue(&ch, 1, TX_Buffer) == 1)
 		{
-			cbfifo_dequeue(&ch, 1, TX_Buffer); //Dequeue TX_Buffer
 			UART0->D = ch; //Put the data across UART line
 		}
 		else
@@ -156,7 +129,7 @@ int __sys_write(int handle, char *buf, int size)
 		return -1;
 
 	//Wait if cbfifo is full
-	while(cbfifo_is_full(TX_Buffer));
+	//while(cbfifo_is_full(TX_Buffer));
 
 	if(cbfifo_enqueue(buf,size,TX_Buffer) != size)
 		return -1;
@@ -181,13 +154,15 @@ int __sys_readc(void)
 		;
 	}
 
-	cbfifo_dequeue(&c, 1, RX_Buffer);
+	if(cbfifo_dequeue(&c, 1, RX_Buffer) == 1)
+		return c;
+
+	else
+		return 0;
 
 
 	/*if((cbfifo_dequeue(&c, 1, RX_Buffer)) != 1)
 		return -1;*/
-
-	return c;
 }
 
 

@@ -12,12 +12,14 @@
 
 
 
-#define INSTANCES  (2)
+#define INSTANCES  (4)
 
 typedef enum instance
 {
 	RX_Buffer,
-	TX_Buffer
+	TX_Buffer,
+	test1,
+	test2
 }inst;
 
 

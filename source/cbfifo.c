@@ -8,26 +8,26 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <MKL25Z4.h>
 #include "cbfifo.h"
+#include <MKL25Z4.h>
 
 
-#define MAX_SIZE 256 //Max size of the circular buffer is 256 bytes
+#define MAX_SIZE 256 //Max size of the circular buffer is 128 bytes
 
 
 //Structure for the circular buffer
 typedef struct cbfifo_struct
 {
-	uint8_t buf[MAX_SIZE];
-	uint8_t head;
-	uint8_t tail;
-	uint8_t length;
-	uint8_t full;
-}volatile cbfifo_t;
+	uint16_t buf[MAX_SIZE];
+	uint16_t head;
+	uint16_t tail;
+	uint16_t length;
+	uint16_t full;
+}cbfifo_t;
 
 
 //Object of the structure
-volatile cbfifo_t q[INSTANCES];
+cbfifo_t q[INSTANCES];
 
 
 
@@ -47,6 +47,7 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 {
 	uint8_t a;
 	size_t temp;
+
 	uint32_t masking_state;
 
 	// save current masking state
@@ -96,9 +97,7 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 	}
 
 	__set_PRIMASK(masking_state);
-
 	return (q[ins].length - temp);
-
 }
 
 
@@ -118,17 +117,15 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
  */
 size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 {
-	uint8_t temp;
+	uint16_t temp;
+	temp = q[ins].length;
+
 	uint32_t masking_state;
 
 	// save current masking state
 	masking_state = __get_PRIMASK();
 	// disable interrupts
 	__disable_irq();
-
-	temp = q[ins].length;
-
-
 
 	if(buf == NULL) // If buf == NULL error
 	{
@@ -147,6 +144,7 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 		__set_PRIMASK(masking_state);
 		return 0;
 	}
+
 	if(nbyte > q[ins].length) //truncating nbyte to available elements
 		nbyte = q[ins].length;
 
@@ -159,12 +157,13 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 			{
 				if((q[ins].head==q[ins].tail) && (q[ins].full == 0))//Checking if buffer is empty
 					break;
-				*((uint8_t *)buf+i) =q[ins].buf[q[ins].tail];
+				*((uint8_t *)buf+i) = q[ins].buf[q[ins].tail];
+				//a[i]= (uint8_t)q[ins].buf[q[ins].tail];
 				(q[ins].tail)++;   //updating tail (incrementing)
 				(q[ins].length)--; //updating length (decrementing)
 				if(q[ins].full == 1) //if a dequeue happens full flag should be set to 0
 					q[ins].full=0;
-				if(q[ins].tail == 128)  //tail wrapping around
+				if(q[ins].tail == 256)  //tail wrapping around
 					q[ins].tail = 0;
 			}
 			__set_PRIMASK(masking_state);
@@ -175,7 +174,8 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 		{
 			if((q[ins].head==q[ins].tail) && (q[ins].full == 0))//Checking if buffer is empty
 				break;
-			*((uint8_t *)buf+i) =q[ins].buf[q[ins].tail];
+			*((uint8_t *)buf+i) = q[ins].buf[q[ins].tail];
+			//a[i] = (uint8_t)q[ins].buf[q[ins].tail];
 			(q[ins].tail)++;
 			(q[ins].length)--;
 			if(q[ins].full == 1)//if a dequeue happens full flag should be set to 0
@@ -209,28 +209,7 @@ size_t cbfifo_length(inst ins)
 
 
 
-/*
- *This function returns full parameter
- * Parameter :
- *	None
- * Return :
- * 	if buffer is full 1 or else 0
- */
-int cbfifo_is_full(inst ins)
-{
-	return q[ins].full;
-}
 
-
-
-
-int cbfifo_is_empty(inst ins)
-{
-	if((q[ins].head==q[ins].tail) && (q[ins].full == 0)) // Buffer is empty
-		return 1;
-	else
-		return 0;
-}
 
 /*
  *This function returns the capacity of the buffer
@@ -257,5 +236,5 @@ size_t cbfifo_capacity(inst ins)
 void cbfifo_dump(inst ins)
 {
 	for(int i =0;i<MAX_SIZE;i++)
-		printf("\n%c",q[ins].buf[i]); //This is used for dumping data
+		printf("%c",q[ins].buf[i]); //This is used for dumping data
 }

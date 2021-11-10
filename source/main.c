@@ -4,11 +4,7 @@
  * Author Howdy Pierce, howdy.pierce@colorado.edu
  */
 
-
-#include <stdio.h>
-
 #include "sysclock.h"
-#include "cbfifo.h"
 #include "UART.h"
 #include "test_cbfifo.h"
 #include "command_processor.h"
@@ -20,19 +16,17 @@
 int main(void)
 {
 
+  //Calling the system clock initialization function
   sysclock_init();
 
+  //Calling the UART initilazation function with BAUD_RATE
   Init_UART0(BAUD_RATE);
 
+  //Calling the CBFIFO testing function
   test2_cbfifo();
 
-
-  //test_cbfifo();
-
-
-
+  //Starting the command processor
   command_processor_start();
-
 
   return 0 ;
 }

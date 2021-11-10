@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "command_processor.h"
 #include "hexdump.h"
@@ -54,13 +55,9 @@ void author_handler(int argc, char *argv[])
  * */
 void dump_handler(int argc, char *argv[])
 {
-
-	if(str == NULL)
-		return;
-	char *s = str;
-
-
-	printf("\n\rHEXDUMP");
+	char a [] = "abcedfghijklmnopqrstuvwzys";
+	//uint16_t *start = &a;
+	hexdump(&a,26);
 }
 
 
@@ -132,6 +129,7 @@ void process_command(char *input)
     ;
   // Tokenize input in place
   bool in_token = false;
+  bool found = false;
   char *argv[10];
   int argc = 0;
   __builtin_memset(argv, 0, sizeof(argv));
@@ -150,13 +148,7 @@ void process_command(char *input)
 		  if(*(p+1) == ' ')
 			  	*(p+1) = '\0';
 	  }
-
-
   }
-
-
- /* for(int i=0;i<argc;i++)
-	  printf("\n\rArgv[%d] : %c",i,*argv[i]);*/
 
 
   argv[argc] = NULL;
@@ -164,17 +156,21 @@ void process_command(char *input)
     return;
 
 
-  // TODO: Dispatch argc/argv to handler
   for (int i=0; i < num_commands; i++)
   {
     if (strcasecmp(argv[0], commands[i].name) == 0)
     {
       commands[i].handler(argc, argv);
+      found = true;
       break;
     }
-    else
-    {									//Reason for hexdump get a unknow command at first
-    	printf("\n\rUnknown Command: "); //For first check it will say unknow command, then it will check second it will find match
-    }
   }
+
+  if(found == false)
+  {
+	  printf("\n\rUnknown Command: ");
+	  for(char *i= argv[0];*i != '\0' ;i++)
+		  printf("%c",*i);
+  }
+
 }

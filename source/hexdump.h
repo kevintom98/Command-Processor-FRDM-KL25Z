@@ -10,7 +10,11 @@
 #define _HEXDUMP_H_
 
 
+#include <stddef.h>
+#include <stdint.h>
 
+char int_to_hexchar(uint32_t x);
+void hexdump(void *start, size_t len);
 
 
 #endif //_HEXDUMP_H_

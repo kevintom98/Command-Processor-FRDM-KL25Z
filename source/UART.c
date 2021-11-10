@@ -3,6 +3,12 @@
  *
  *  Created on: 04-Nov-2021
  *      Author: Kevin Tom
+ *
+ * Description
+ * -----------
+ * This file handles the UART0 configuration, UART0 Interrupt handler and __sys_readc,__sys_write
+ *
+ *
  */
 
 
@@ -11,6 +17,19 @@
 #include "cbfifo.h"
 
 
+
+/* This function initializes UART0 with sysclock.c configuration and enables
+ * interrupts on it.
+ *
+ *  This code is inspired from,
+ * 	https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8
+ *
+ * Parameters:
+ * 		uint32_t baud_rate - The baud rate to which it should be configured to
+ *
+ * Returns:
+ * 		None
+ * */
 
 
 void Init_UART0(uint32_t baud_rate)
@@ -30,8 +49,10 @@ void Init_UART0(uint32_t baud_rate)
 
 
 	// Set pins to UART0 Rx and Tx
-	PORTA->PCR[1] = PORT_PCR_ISF_MASK | PORT_PCR_MUX(2); // Rx    //Interrupt status flag (ISF) on  Pin-1 , interrupt is detected, Alternate 2 (UART)
-	PORTA->PCR[2] = PORT_PCR_ISF_MASK | PORT_PCR_MUX(2); // Tx    //Interrupt status flag (ISF) on  Pin-2 , interrupt is detected, Alternate 2 (UART)
+	//Interrupt status flag (ISF) on  Pin-1 , interrupt is detected, Alternate 2 (UART)
+	PORTA->PCR[1] = PORT_PCR_ISF_MASK | PORT_PCR_MUX(2); // Rx
+	 //Interrupt status flag (ISF) on  Pin-2 , interrupt is detected, Alternate 2 (UART)
+	PORTA->PCR[2] = PORT_PCR_ISF_MASK | PORT_PCR_MUX(2); // Tx
 
 	// Set baud rate and oversampling ratio
 	sbr = (uint16_t)((SYS_CLOCK)/(baud_rate * UART_OVERSAMPLE_RATE));
@@ -56,7 +77,7 @@ void Init_UART0(uint32_t baud_rate)
 	UART0->S2 = UART0_S2_MSBF(0) | UART0_S2_RXINV(0);
 
 
-	/********************************************Interrupts part************************************************************/
+	/******************Interrupts Configuration part*********************/
 
 	NVIC_SetPriority(UART0_IRQn, 2); // 0, 1, 2, or 3
 	NVIC_ClearPendingIRQ(UART0_IRQn);
@@ -64,7 +85,7 @@ void Init_UART0(uint32_t baud_rate)
 
 	// Enable receive interrupts but not transmit interrupts yet
 	UART0->C2 |= UART_C2_RIE(1);
-	/*************************************************************************************************************************/
+	/********************************************************************/
 
 	// Enable UART receiver and transmitter
 	UART0->C2 |= UART0_C2_RE(1) | UART0_C2_TE(1);
@@ -77,7 +98,20 @@ void Init_UART0(uint32_t baud_rate)
 
 
 
-// UART0 IRQ Handler. Listing 8.12 on p. 235
+
+
+/* Interrupt handler for UART0, This function will enqueue and dequeue from
+ * cbfifo on interrupt triggers.
+ *
+ *  This code is inspired from,
+ * 	https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8
+ *
+ * Parameters:
+ * 		None
+ *
+ * Returns:
+ * 		None
+ * */
 void UART0_IRQHandler(void)
 {
 	uint8_t ch;
@@ -123,19 +157,39 @@ void UART0_IRQHandler(void)
 }
 
 
+
+/* overwriting the sys_write function which will help in using printf, when we
+ * overwrite this function we will direct printf to UART0.
+ *
+ *  This code is inspired from,
+ * 	https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8
+ *
+ * Parameters:
+ * 				 int handle -  stdout - (handle = 1)
+ * 	  	  	  	  	  	  	   stderr - (handle = 2)
+ * 	  	  	  	  	  	  	   In this case we are directing both to serial, so no need to
+ * 	  	  	  	  	  	  	   take care of this
+ *                char *buf  -  start address of buffer to be written
+ *                int size   -  number of characters to be written
+ *
+ * Returns:
+ * 		-1 in case of error
+ * 	  	 0 in case of sucess
+ * */
+
+
 int __sys_write(int handle, char *buf, int size)
 {
-	if(buf == NULL)
+	//In case of error return -1
+	if(buf == NULL || size <= 0)
 		return -1;
 
-	//Wait if cbfifo is full
-	//while(cbfifo_is_full(TX_Buffer));
-
+	//Enqueue to transmit buffer
 	if(cbfifo_enqueue(buf,size,TX_Buffer) != size)
 		return -1;
 
 	//Generating a transmit signal
-	// start transmitter if it isn't already running
+	//start transmitter if it isn't already running
 	if (!(UART0->C2 & UART0_C2_TIE_MASK))
 	{
 		UART0->C2 |= UART0_C2_TIE(1);
@@ -146,23 +200,35 @@ int __sys_write(int handle, char *buf, int size)
 	return 0;
 }
 
+
+
+
+
+
+
+
+/* overwriting the__sys_readc function which will help in using getchar(), when we
+ * overwrite this function we will direct pgetchar to UART0.
+ *  This code is inspired from,
+ * 	https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8
+ *
+ * Parameters:
+ * 			None
+ *
+ * Returns:
+ *         int - ASCII code of character written/0 in case of error
+ * */
 int __sys_readc(void)
 {
 	char c;
-	while((cbfifo_length(RX_Buffer)==0))
-	{
-		;
-	}
+	//Wait till something is written into RX_Buffer, i.e, wait till use writes something
+	while((cbfifo_length(RX_Buffer)==0));
 
+	//After RX_Buffer has value dequeue it and return
 	if(cbfifo_dequeue(&c, 1, RX_Buffer) == 1)
 		return c;
-
 	else
 		return 0;
-
-
-	/*if((cbfifo_dequeue(&c, 1, RX_Buffer)) != 1)
-		return -1;*/
 }
 
 

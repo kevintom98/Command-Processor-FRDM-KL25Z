@@ -59,27 +59,18 @@ void author_handler(int argc, char *argv[])
 void dump_handler(int argc, char *argv[])
 {
 
-	int start =  (int)strtol(argv[1],NULL,16);
+	int start = 0, len = 0;
 
-	int len = 0;
+	start = (int)strtol(argv[1],NULL,16);
 
-	if(*(argv[2]+1) == 'x')
+	if((*(argv[2]) == '0') && (*(argv[2]+1) == 'x'))
 		len = (int)strtol(argv[2],NULL,16);
 	else
 		len = atoi(argv[2]);
 
 
-
 	hexdump((int *)start,len);
 
-
-	/*printf("\n\n\r\rargv[1]:\n\r");
-	for(char *i= argv[1];*i != '\0' ;i++)
-		printf("%c",*i);
-
-	printf("\n\n\r\rargv[2]:\n\r");
-	for(char *i= argv[2];*i != '\0' ;i++)
-		printf("%c",*i);*/
 }
 
 
@@ -108,9 +99,6 @@ static const int num_commands = sizeof(commands) / sizeof(command_table_t);
 
 
 
-
-
-
 void command_processor_start()
 {
 	char command[100];
@@ -121,6 +109,8 @@ void command_processor_start()
 	{
 		printf("\n\r? ");
 		i= -1;
+
+		//Accumulator
 		while(command[i] != '\r')
 		{
 			i++;
@@ -130,7 +120,6 @@ void command_processor_start()
 				command[i++] = '\0';
 				break;
 			}
-
 		}
 		process_command(command);
 	}
@@ -193,5 +182,4 @@ void process_command(char *input)
 	  for(char *i= argv[0];*i != '\0' ;i++)
 		  printf("%c",*i);
   }
-
 }

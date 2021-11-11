@@ -4,13 +4,13 @@
  *  Created on: 04-Nov-2021
  *      Author: Kevin Tom, Kevin.Tom@colorado.edu
  */
-
 #ifndef _COMMAND_PROCESSOR_H_
 #define _COMMAND_PROCESSOR_H_
 
 
 //Function pointer for each function
 typedef void (*command_handler_t)(int, char *argv[]);
+
 
 
 //Structure which holds all the handler details
@@ -22,6 +22,8 @@ typedef struct
 } command_table_t;
 
 
+
+
 /* This function is the handler for author command.
  * This function prints the authors name
  *
@@ -30,8 +32,6 @@ typedef struct
  *
  * Returns:
  * None
- *
- *
  * */
 void author_handler();
 

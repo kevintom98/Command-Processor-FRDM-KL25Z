@@ -3,6 +3,9 @@
  *
  *  Created on: 09-Nov-2021
  *      Author: Kevin Tom, Kevin.Tom@colorado.edu
+ *
+ *
+ *      This file has the hexdump function
  */
 
 
@@ -13,15 +16,19 @@
 #include <stddef.h>
 #include <string.h>
 
-#define STRIDE    (16)
-#define DUMP_MAX_SIZE (640)
 
 
 
 
-
-
-
+/* This converts integer input to hexadecimal character
+ *
+ *
+ * Parameters:
+ * 		uint32_t x - Number to be converted
+ *
+ * Returns:
+ * 		char       - Hexadecimal equivalent
+ * */
 char int_to_hexchar(uint32_t x)
 {
 	if (x < 10)
@@ -31,39 +38,56 @@ char int_to_hexchar(uint32_t x)
 }
 
 
+
+
+
+/* This function prints the hexdump starting from an address till the
+ * given length.
+ *
+ *
+ * Parameters:
+ * 		int *start - Start address
+ * 		size_t len - Total number of locations to be printed
+ *
+ * Returns:
+ * 		None
+ * */
 void hexdump(int *start, size_t len)
 {
 	uint8_t *buf = (uint8_t*) start;
 	int start_addr = (int)start;
 
 
+	//Truncating i the len is greater than MAX Size (640)
 	if(len > DUMP_MAX_SIZE)
 	{
 		len = DUMP_MAX_SIZE;
 	}
 
+	//Printing in a new line
 	printf("\n\r");
 
 	for(int i =0;i<len;i+=STRIDE)
 	{
-		    printf("%04x_%04x",(start_addr & (0xFFFF0000)),(start_addr & (0x0000FFFF)));
-			printf("  ");
+		//Printing the address
+		printf("%04x_%04x",(start_addr & (0xFFFF0000)),(start_addr & (0x0000FFFF)));
+	    printf("  ");
 
-			for (int j=0; (j < STRIDE) && (i+j < len); j++)
-			{
-			  printf("%c",int_to_hexchar((buf[i+j]) >> 4));
-			  printf("%c",int_to_hexchar((buf[i+j]) & 0x0f));
-			  printf(" ");
-			}
+	    //Printing the memory content
+	    for (int j=0; (j < STRIDE) && (i+j < len); j++)
+		{
+	    	printf("%c",int_to_hexchar((buf[i+j]) >> 4));
+			printf("%c",int_to_hexchar((buf[i+j]) & 0x0f));
+			printf(" ");
+		}
 
-			start_addr += STRIDE;
+	    //Incrementing the address by STRIDE
+		start_addr += STRIDE;
 
-			if(i < (len-1))
-			{
-				printf("\r");
-				printf("\n");
-			}
-	  }
+		//Going to new line
+			printf("\r");
+			printf("\n");
+	 }
 }
 
 

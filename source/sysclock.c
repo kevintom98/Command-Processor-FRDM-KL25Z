@@ -13,8 +13,7 @@
 #include "sysclock.h"
 
 
-void
-sysclock_init()
+void sysclock_init()
 {
   // Corresponds to FEI mode as shown in sec 24.4.1 
 

@@ -47,8 +47,8 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 {
 	uint8_t a;
 	size_t temp;
-
 	uint32_t masking_state;
+
 
 	// save current masking state
 	masking_state = __get_PRIMASK();
@@ -56,25 +56,33 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 	__disable_irq();
 
 
-
-	if(nbyte == 0) //Case when nbyte is 0
+	/***********************INITIAL CONDITIONS*****************************/
+	//Case when nbyte is 0
+	if(nbyte == 0)
 	{
 		__set_PRIMASK(masking_state);
 		return 0;
 	}
-	if(buf == NULL) //Case when *buf is NULL
+
+	//Case when *buf is NULL
+	if(buf == NULL)
 	{
 		__set_PRIMASK(masking_state);
 		return -1;
 	}
-	if(nbyte > MAX_SIZE) //When nbyte>128 truncating it to 128
+
+	//When nbyte>128 truncating it to 128
+	if(nbyte > MAX_SIZE)
 		nbyte = MAX_SIZE;
-	if(q[ins].full == 1) //If buffer is full returning 0
+
+	//If buffer is full returning 0
+	if(q[ins].full == 1)
 	{
 		__set_PRIMASK(masking_state);
 		return 0;
 	}
 
+	/******************************************************************/
 
 	temp = q[ins].length; //temp for calculating length difference
 
@@ -87,7 +95,7 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 		if(q[ins].full == 1) // Checking if full
 			break;
 
-		a = *(uint8_t *)(buf+i); // converting data in pointer location to uint_8
+		a = *(uint8_t *)(buf+i); 		  // converting data in pointer location to uint_8
         q[ins].buf[q[ins].head]=a;        //Writing data into buffer
 
 		(q[ins].head)++;  //Updating head
@@ -130,42 +138,60 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 	// disable interrupts
 	__disable_irq();
 
-	if(buf == NULL) // If buf == NULL error
+
+
+
+	/***********************INITIAL CONDITIONS*****************************/
+	// If buf == NULL error
+	if(buf == NULL)
 	{
 		__set_PRIMASK(masking_state);
 		return -1;
 	}
-	if(nbyte == 0) //Case when nbyte is 0
+
+	//Case when nbyte is 0
+	if(nbyte == 0)
 	{
 		__set_PRIMASK(masking_state);
 		return 0;
 	}
-	if(nbyte > MAX_SIZE) //When nbyte>128 truncating it to 128
+
+	//When nbyte>128 truncating it to 128
+	if(nbyte > MAX_SIZE)
 		nbyte = MAX_SIZE;
 
-	if((q[ins].head==q[ins].tail) && (q[ins].full == 0)) // Buffer is empty
+	// Buffer is empty
+	if((q[ins].head==q[ins].tail) && (q[ins].full == 0))
 	{
 		__set_PRIMASK(masking_state);
 		return 0;
 	}
 
-	if(nbyte > q[ins].length) //truncating nbyte to available elements
+	//truncating nbyte to available elements
+	if(nbyte > q[ins].length)
 		nbyte = q[ins].length;
+
+	/********************************************************************/
 
 
 	if(q[ins].length != 0)
 	{
-		if(nbyte > q[ins].length)  /*Case where nbyte is greater than length*/
+		/*Case where nbyte is greater than length*/
+		if(nbyte > q[ins].length)
 		{
 			for(int i=0;i<q[ins].length;i++)
 			{
-				if((q[ins].head==q[ins].tail) && (q[ins].full == 0))//Checking if buffer is empty
+				//Checking if buffer is empty
+				if((q[ins].head==q[ins].tail) && (q[ins].full == 0))
 				{
 					break;
 				}
+
 				*((uint8_t *)buf+i) = q[ins].buf[q[ins].tail];
-				(q[ins].tail)++;   //updating tail (incrementing)
-				(q[ins].length)--; //updating length (decrementing)
+
+				(q[ins].tail)++;     //updating tail (incrementing)
+				(q[ins].length)--;   //updating length (decrementing)
+
 				if(q[ins].full == 1) //if a dequeue happens full flag should be set to 0
 					q[ins].full=0;
 				if(q[ins].tail == MAX_SIZE)  //tail wrapping around
@@ -177,18 +203,25 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 
 		for( int i=0;i<nbyte;i++)
 		{
-			if((q[ins].head==q[ins].tail) && (q[ins].full == 0))//Checking if buffer is empty
+			//Checking if buffer is empty
+			if((q[ins].head==q[ins].tail) && (q[ins].full == 0))
 				break;
+
 			*((uint8_t *)buf+i) = q[ins].buf[q[ins].tail];
+
 			(q[ins].tail)++;
 			(q[ins].length)--;
-			if(q[ins].full == 1)//if a dequeue happens full flag should be set to 0
+
+			//if a dequeue happens full flag should be set to 0
+			if(q[ins].full == 1)
 				q[ins].full=0;
-			if(q[ins].tail == MAX_SIZE) //tail wrapping around
+			//tail wrapping around
+			if(q[ins].tail == MAX_SIZE)
 				q[ins].tail = 0;
 		}
 		__set_PRIMASK(masking_state);
-		return (temp - q[ins].length);//returning the difference in lengths
+		//returning the difference in lengths
+		return (temp - q[ins].length);
 	}
 
 	__set_PRIMASK(masking_state);

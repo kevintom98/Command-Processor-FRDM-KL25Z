@@ -12,8 +12,10 @@
 
 
 
+//Number of CBFIFO instances in use
 #define INSTANCES  (2)
 
+//Name of the instances
 typedef enum instance
 {
 	RX_Buffer,
@@ -84,11 +86,14 @@ size_t cbfifo_length(inst ins);
 size_t cbfifo_capacity(inst ins);
 
 
-int cbfifo_is_full(inst ins);
-
-
-int cbfifo_is_empty(inst ins);
-
+/* This function dumps characters in the buffer as
+ *  char.
+ * Parameter:
+ *	None
+ * Return:
+ *	None
+ *
+ */
 void cbfifo_dump(inst ins);
 
 

@@ -6,7 +6,7 @@
  *      Author: Kevin Tom, Kevin.Tom@colorado.edu
  *
  *
- *  This file has the function implementation of
+ *  This file has the function implementation of command processor
  */
 
 #include <stdio.h>
@@ -19,7 +19,6 @@
 #include "hexdump.h"
 
 
-typedef void (*command_handler_t)(int, char *argv[]);
 
 
 
@@ -27,16 +26,16 @@ typedef void (*command_handler_t)(int, char *argv[]);
  * This function prints the authors name
  *
  * Parameters:
- * 	argc and argv
+ * None
  *
  * Returns:
  * None
  *
  *
  * */
-void author_handler(int argc, char *argv[])
+void author_handler()
 {
-	printf("\n\rKevin Tom");
+	printf("\n\rKevin Tom\n\r");
 }
 
 
@@ -49,7 +48,8 @@ void author_handler(int argc, char *argv[])
  * This function prints the authors name
  *
  * Parameters:
- * 	argc and argv
+ * 	argc - Number of arguments
+ * 	argv - Array of arguments ending with '\0'
  *
  * Returns:
  * None
@@ -61,66 +61,93 @@ void dump_handler(int argc, char *argv[])
 
 	int start = 0, len = 0;
 
+	//Converting start address to from hex to decimal
 	start = (int)strtol(argv[1],NULL,16);
 
+	/*If given address is in hex convert it into decimal
+	 * Else convert it into decimal from string
+	 */
 	if((*(argv[2]) == '0') && (*(argv[2]+1) == 'x'))
 		len = (int)strtol(argv[2],NULL,16);
 	else
 		len = atoi(argv[2]);
 
 
+	//Calling the hexdump function
 	hexdump((int *)start,len);
-
 }
 
 
 
 
-typedef struct
+/* This function is the handler for help command
+ * it prints the help menu
+ *
+ * Parameters:
+ * 	argc - Number of arguments
+ * 	argv - Array of arguments ending with '\0'
+ *
+ * Returns:
+ * 	None
+ * */
+void help_handler()
 {
-  const char *name;
-  command_handler_t handler;
-  const char *help_string;
-} command_table_t;
-
-
-
-static const command_table_t commands[] =
-{
-		{"author", author_handler,"\n\rThis command will print the name of the author who wrote the command line"},
-		{"dump", dump_handler,"\n\rThis command will print Hexdump of memory(eg: dump start_addr end_addr ; dump 0 0x64)"}
-};
-
-
-static const int num_commands = sizeof(commands) / sizeof(command_table_t);
+	for (int i=0; i < num_commands; i++)
+	  {
+		//Prints until help
+	    if (strcasecmp("help", commands[i].name) != 0)
+	    {
+	    	//Printing the string
+	    	for(const char *j=commands[i].help_string; *j != '\0'; j++)
+	    		printf("%c",*j);
+	    }
+	  }
+}
 
 
 
 
 
-
+/* This function starts the command processor and handles the commands recevied
+ *
+ * Parameters:
+ * 	None
+ *
+ * Returns:
+ * None
+ *
+ *
+ * */
 void command_processor_start()
 {
 	char command[100];
 	int i=-1;
-	printf("\n\n\rWelcome to BreakfastSerial!");
+	printf("\n\n\rWelcome to BreakfastSerial!\n\r");
 
 	while(1)
 	{
-		printf("\n\r? ");
+		printf("? ");
 		i= -1;
 
-		//Accumulator
+		/**********Accumulator***********/
 		while(command[i] != '\r')
 		{
 			i++;
-			command[i] = getchar();
-			if(command[i] == '\r')
+			//Getting character
+			command[i]= getchar();
+
+			//Handling backspace
+			if((command[i] == '\b') && (i > 1))
 			{
-				command[i++] = '\0';
-				break;
+				command[i] =' ';
+				printf(" \b \b");
 			}
+
 		}
+		command[i++] = '\0';
+		/*****************************/
+
+		//Calling process command function
 		process_command(command);
 	}
 
@@ -131,41 +158,64 @@ void command_processor_start()
 
 
 
-
+/* This function splits the received command into
+ * argc and argv vectors and calls appropriate handling functions
+ *
+ * Parameters:
+ * 	char *input - Input string from accumualtor
+ *
+ * Returns:
+ * 	None
+ *
+ *
+ * */
 void process_command(char *input)
 {
   char *p = input;
   char *end;
+
+
   // find end of string
   for (end = input; *end != '\0'; end++)
     ;
-  // Tokenize input in place
-  bool in_token = false;
+
+
+  //Bool for printing error message
   bool found = false;
   char *argv[10];
   int argc = 0;
+
+
   __builtin_memset(argv, 0, sizeof(argv));
+
 
   for (p = input; p < end; p++)
   {
+	  //If a character is recognized
 	  if((*p >= 48))
 	  {
+		  //if previous character is ' ' or '\0' or it is starting character
 		  if( (*(p-1) ==' ') || (p == input) || (*(p-1) =='\0'))
 		  {
+			  //Write the address to argv[argc]
 			  argv[argc] = p;
+			  //Incrementing argc
 			  argc++;
 		  }
+		  //If trailing character is space make it as '\0'
 		  if(*(p+1) == ' ')
 			  	*(p+1) = '\0';
 	  }
   }
 
 
+  //If no command received
   argv[argc] = NULL;
   if (argc == 0)   // no command
     return;
 
 
+  //Checking which handler to call using argv[0] string
   for (int i=0; i < num_commands; i++)
   {
     if (strcasecmp(argv[0], commands[i].name) == 0)
@@ -176,10 +226,12 @@ void process_command(char *input)
     }
   }
 
+  //If no handler is found print error message
   if(found == false)
   {
 	  printf("\n\rUnknown Command: ");
 	  for(char *i= argv[0];*i != '\0' ;i++)
 		  printf("%c",*i);
+	  printf("\n\r");
   }
 }

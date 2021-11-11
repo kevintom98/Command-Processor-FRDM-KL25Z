@@ -636,7 +636,7 @@ END GROUP
                 0x20003000                __top_SRAM = 0x20003000
                 0x20003000                __top_RAM = 0x20003000
 
-.text           0x00000000     0x882c
+.text           0x00000000     0x8828
  FILL mask 0xff
                 0x00000000                __vectors_start__ = ABSOLUTE (.)
  *(SORT_BY_ALIGNMENT(.isr_vector))
@@ -646,7 +646,7 @@ END GROUP
                 0x000000c0                . = ALIGN (0x4)
                 0x000000c0                __section_table_start = .
                 0x000000c0                __data_section_table = .
-                0x000000c0        0x4 LONG 0x882c LOADADDR (.data)
+                0x000000c0        0x4 LONG 0x8828 LOADADDR (.data)
                 0x000000c4        0x4 LONG 0x1ffff080 ADDR (.data)
                 0x000000c8        0x4 LONG 0x0 SIZEOF (.data)
                 0x000000cc                __data_section_table_end = .
@@ -951,62 +951,62 @@ END GROUP
                 0x0000512c        0x3 ./source/command_processor.o
  *fill*         0x0000512f        0x1 ff
  .rodata.command_processor_start.str1.4
-                0x00005130       0x2d ./source/command_processor.o
- *fill*         0x0000515d        0x3 ff
+                0x00005130       0x29 ./source/command_processor.o
+ *fill*         0x00005159        0x3 ff
  .rodata.process_command.str1.4
-                0x00005160       0x14 ./source/command_processor.o
+                0x0000515c       0x14 ./source/command_processor.o
                                  0x17 (size before relaxing)
  .rodata.hexdump.str1.4
-                0x00005174       0x12 ./source/hexdump.o
+                0x00005170       0x12 ./source/hexdump.o
                                  0x22 (size before relaxing)
- *fill*         0x00005186        0x2 ff
+ *fill*         0x00005182        0x2 ff
  .rodata.test_cbfifo.str1.4
-                0x00005188     0x34b6 ./source/test_cbfifo.o
- *fill*         0x0000863e        0x2 ff
+                0x00005184     0x34b6 ./source/test_cbfifo.o
+ *fill*         0x0000863a        0x2 ff
  .rodata.__num_Ciob_streams
-                0x00008640        0x4 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_nohost_nf.a(__ciob.o)
-                0x00008640                __num_Ciob_streams
+                0x0000863c        0x4 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_nohost_nf.a(__ciob.o)
+                0x0000863c                __num_Ciob_streams
  .rodata.__assertion_failed.str1.1
-                0x00008644       0x15 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_nohost_nf.a(_cr_assert.o)
+                0x00008640       0x15 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_nohost_nf.a(_cr_assert.o)
  .rodata._Csys_alloc.str1.1
-                0x00008659       0x18 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(alloc.o)
+                0x00008655       0x18 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(alloc.o)
  .rodata._initio.str1.1
-                0x00008671        0x4 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(initio.o)
+                0x0000866d        0x4 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(initio.o)
  .rodata.__vfprintf.str1.1
-                0x00008675       0x35 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(printf.o)
+                0x00008671       0x35 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(printf.o)
                                  0x38 (size before relaxing)
  .rodata.__ctype
-                0x000086aa      0x180 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(ctype.o)
-                0x000086aa                __ctype
-                0x0000882c                . = ALIGN (0x4)
- *fill*         0x0000882a        0x2 ff
+                0x000086a6      0x180 d:/programfiles/mcuxpressoide_11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.win32_11.2.0.202001021529/tools/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libcr_c.a(ctype.o)
+                0x000086a6                __ctype
+                0x00008828                . = ALIGN (0x4)
+ *fill*         0x00008826        0x2 ff
 
-.glue_7         0x0000882c        0x0
- .glue_7        0x0000882c        0x0 linker stubs
+.glue_7         0x00008828        0x0
+ .glue_7        0x00008828        0x0 linker stubs
 
-.glue_7t        0x0000882c        0x0
- .glue_7t       0x0000882c        0x0 linker stubs
+.glue_7t        0x00008828        0x0
+ .glue_7t       0x00008828        0x0 linker stubs
 
-.vfp11_veneer   0x0000882c        0x0
- .vfp11_veneer  0x0000882c        0x0 linker stubs
+.vfp11_veneer   0x00008828        0x0
+ .vfp11_veneer  0x00008828        0x0 linker stubs
 
-.v4_bx          0x0000882c        0x0
- .v4_bx         0x0000882c        0x0 linker stubs
+.v4_bx          0x00008828        0x0
+ .v4_bx         0x00008828        0x0 linker stubs
 
-.iplt           0x0000882c        0x0
- .iplt          0x0000882c        0x0 ./startup/startup_mkl25z4.o
+.iplt           0x00008828        0x0
+ .iplt          0x00008828        0x0 ./startup/startup_mkl25z4.o
 
-.rel.dyn        0x0000882c        0x0
- .rel.iplt      0x0000882c        0x0 ./startup/startup_mkl25z4.o
+.rel.dyn        0x00008828        0x0
+ .rel.iplt      0x00008828        0x0 ./startup/startup_mkl25z4.o
 
 .ARM.extab
  *(SORT_BY_ALIGNMENT(.ARM.extab*) SORT_BY_ALIGNMENT(.gnu.linkonce.armextab.*))
 
-.ARM.exidx      0x0000882c        0x0
-                0x0000882c                __exidx_start = .
+.ARM.exidx      0x00008828        0x0
+                0x00008828                __exidx_start = .
  *(SORT_BY_ALIGNMENT(.ARM.exidx*) SORT_BY_ALIGNMENT(.gnu.linkonce.armexidx.*))
-                0x0000882c                __exidx_end = .
-                0x0000882c                _etext = .
+                0x00008828                __exidx_end = .
+                0x00008828                _etext = .
 
 .m_usb_data
  *(SORT_BY_ALIGNMENT(m_usb_bdt))
@@ -1024,7 +1024,7 @@ END GROUP
                 0x1ffff080                . = ALIGN (0x4)
                 0x1ffff080                _end_uninit_RESERVED = .
 
-.data           0x1ffff080        0x0 load address 0x0000882c
+.data           0x1ffff080        0x0 load address 0x00008828
  FILL mask 0xff
                 0x1ffff080                _data = .
                 [!provide]                PROVIDE (__start_data_RAM = .)
@@ -1040,7 +1040,7 @@ END GROUP
                 [!provide]                PROVIDE (__end_data_RAM = .)
                 [!provide]                PROVIDE (__end_data_SRAM = .)
 
-.igot.plt       0x1ffff080        0x0 load address 0x0000882c
+.igot.plt       0x1ffff080        0x0 load address 0x00008828
  .igot.plt      0x1ffff080        0x0 ./startup/startup_mkl25z4.o
 
 .bss            0x1ffff080      0x4d0
@@ -1095,8 +1095,8 @@ END GROUP
                 0x20002c00                . = ALIGN (0x4)
                 0x20003000                _vStackTop = (. + _StackSize)
                 0x00000000                _image_start = LOADADDR (.text)
-                0x0000882c                _image_end = (LOADADDR (.data) + SIZEOF (.data))
-                0x0000882c                _image_size = (_image_end - _image_start)
+                0x00008828                _image_end = (LOADADDR (.data) + SIZEOF (.data))
+                0x00008828                _image_size = (_image_end - _image_start)
 OUTPUT(BreakfastSerial.axf elf32-littlearm)
 
 .debug_info     0x00000000     0x25c8

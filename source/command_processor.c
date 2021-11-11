@@ -123,7 +123,7 @@ void command_processor_start()
 {
 	char command[100];
 	int i=-1;
-	printf("\n\n\rWelcome to BreakfastSerial!\n\r");
+	printf("\rWelcome to BreakfastSerial!\n\r");
 
 	while(1)
 	{

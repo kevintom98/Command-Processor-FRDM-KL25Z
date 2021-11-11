@@ -14,7 +14,7 @@
 #include <stdint.h>
 
 char int_to_hexchar(uint32_t x);
-void hexdump(void *start, size_t len);
+void hexdump(int *start, size_t len);
 
 
 #endif //_HEXDUMP_H_

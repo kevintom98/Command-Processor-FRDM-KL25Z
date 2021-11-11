@@ -10,6 +10,5 @@
 #define _TEST_CBFIFO_H_
 
 void test_cbfifo();
-void test2_cbfifo();
 
 #endif // _TEST_CBFIFO_H_

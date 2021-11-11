@@ -10,6 +10,8 @@
 #include "command_processor.h"
 
 
+
+//Baud rate setting
 #define BAUD_RATE 38400
 
 
@@ -19,11 +21,13 @@ int main(void)
   //Calling the system clock initialization function
   sysclock_init();
 
-  //Calling the UART initilazation function with BAUD_RATE
+  //Calling the CBFIFO testing function
+  test_cbfifo();
+
+
+  //Calling the UART initialization function with BAUD_RATE
   Init_UART0(BAUD_RATE);
 
-  //Calling the CBFIFO testing function
-  test2_cbfifo();
 
   //Starting the command processor
   command_processor_start();

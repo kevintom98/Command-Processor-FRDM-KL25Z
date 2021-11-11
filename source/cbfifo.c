@@ -67,8 +67,8 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 		__set_PRIMASK(masking_state);
 		return -1;
 	}
-	if(nbyte > 256) //When nbyte>128 truncating it to 128
-		nbyte = 256;
+	if(nbyte > MAX_SIZE) //When nbyte>128 truncating it to 128
+		nbyte = MAX_SIZE;
 	if(q[ins].full == 1) //If buffer is full returning 0
 	{
 		__set_PRIMASK(masking_state);
@@ -78,7 +78,7 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 
 	temp = q[ins].length; //temp for calculating length difference
 
-	if((q[ins].head == 256)) //Wrapping head around
+	if((q[ins].head == MAX_SIZE)) //Wrapping head around
 		q[ins].head=0;
 
 
@@ -86,11 +86,14 @@ size_t cbfifo_enqueue(void *buf, size_t nbyte, inst ins)
 	{
 		if(q[ins].full == 1) // Checking if full
 			break;
+
 		a = *(uint8_t *)(buf+i); // converting data in pointer location to uint_8
-        	q[ins].buf[q[ins].head]=a;        //Writing data into buffer
+        q[ins].buf[q[ins].head]=a;        //Writing data into buffer
+
 		(q[ins].head)++;  //Updating head
 		(q[ins].length)++; //updating length
-		if((q[ins].head == 256)) //Wrapping head around
+
+		if((q[ins].head == MAX_SIZE)) //Wrapping head around
 			q[ins].head=0;
 		if(q[ins].head == q[ins].tail)
 			q[ins].full = 1;
@@ -137,8 +140,9 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 		__set_PRIMASK(masking_state);
 		return 0;
 	}
-	if(nbyte > 256) //When nbyte>128 truncating it to 128
-		nbyte = 256;
+	if(nbyte > MAX_SIZE) //When nbyte>128 truncating it to 128
+		nbyte = MAX_SIZE;
+
 	if((q[ins].head==q[ins].tail) && (q[ins].full == 0)) // Buffer is empty
 	{
 		__set_PRIMASK(masking_state);
@@ -156,14 +160,15 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 			for(int i=0;i<q[ins].length;i++)
 			{
 				if((q[ins].head==q[ins].tail) && (q[ins].full == 0))//Checking if buffer is empty
+				{
 					break;
+				}
 				*((uint8_t *)buf+i) = q[ins].buf[q[ins].tail];
-				//a[i]= (uint8_t)q[ins].buf[q[ins].tail];
 				(q[ins].tail)++;   //updating tail (incrementing)
 				(q[ins].length)--; //updating length (decrementing)
 				if(q[ins].full == 1) //if a dequeue happens full flag should be set to 0
 					q[ins].full=0;
-				if(q[ins].tail == 256)  //tail wrapping around
+				if(q[ins].tail == MAX_SIZE)  //tail wrapping around
 					q[ins].tail = 0;
 			}
 			__set_PRIMASK(masking_state);
@@ -175,12 +180,11 @@ size_t cbfifo_dequeue(void *buf, size_t nbyte, inst ins)
 			if((q[ins].head==q[ins].tail) && (q[ins].full == 0))//Checking if buffer is empty
 				break;
 			*((uint8_t *)buf+i) = q[ins].buf[q[ins].tail];
-			//a[i] = (uint8_t)q[ins].buf[q[ins].tail];
 			(q[ins].tail)++;
 			(q[ins].length)--;
 			if(q[ins].full == 1)//if a dequeue happens full flag should be set to 0
 				q[ins].full=0;
-			if(q[ins].tail == 256) //tail wrapping around
+			if(q[ins].tail == MAX_SIZE) //tail wrapping around
 				q[ins].tail = 0;
 		}
 		__set_PRIMASK(masking_state);

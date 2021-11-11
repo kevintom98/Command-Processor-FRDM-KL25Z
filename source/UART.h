@@ -16,19 +16,6 @@
 #define PARITY					(0) //Make it 1 for enabling parity
 
 
-
-/********************************************************************************************
-  Name         : Init_UART0(uint32_t baud_rate)
-  Description : This function initializes UART0 with sysclock.c configuration and enables
-  	  	  	  	interrupts on it.
-
-  	  	  	  	This code is inspired from,
-  	  	  	  	https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8
-
-
-  Arguments    : uint32_t baud_rate - The baud rate to which it should be configured to
-  Returns      : void
-********************************************************************************************/
 void Init_UART0(uint32_t baud_rate);
 
 #endif

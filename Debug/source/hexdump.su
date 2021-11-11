@@ -1,2 +1,2 @@
-hexdump.c:23:6:int_to_hexchar	16	static
+hexdump.c:25:6:int_to_hexchar	16	static
 hexdump.c:34:6:hexdump	32	static

@@ -30,8 +30,6 @@
  * Returns:
  * 		None
  * */
-
-
 void Init_UART0(uint32_t baud_rate)
 {
 	uint16_t sbr;
@@ -78,7 +76,6 @@ void Init_UART0(uint32_t baud_rate)
 
 
 	/******************Interrupts Configuration part*********************/
-
 	NVIC_SetPriority(UART0_IRQn, 2); // 0, 1, 2, or 3
 	NVIC_ClearPendingIRQ(UART0_IRQn);
 	NVIC_EnableIRQ(UART0_IRQn);
@@ -137,15 +134,19 @@ void UART0_IRQHandler(void)
 		{
 			;
 		}
-		//If not discard
+		else
+		{
+			//If not discard
+		}
 	}
 
 	if ( (UART0->C2 & UART0_C2_TIE_MASK) &&    // transmitter interrupt enabled
 			(UART0->S1 & UART0_S1_TDRE_MASK) ) //If transmit data buffer is empty
 	{
 		// checking if tx buffer empty
-		if(cbfifo_dequeue(&ch, 1, TX_Buffer) == 1)
+		if(cbfifo_length(TX_Buffer) > 0)
 		{
+			cbfifo_dequeue(&ch, 1, TX_Buffer);
 			UART0->D = ch; //Put the data across UART line
 		}
 		else
@@ -176,13 +177,15 @@ void UART0_IRQHandler(void)
  * 		-1 in case of error
  * 	  	 0 in case of sucess
  * */
-
-
 int __sys_write(int handle, char *buf, int size)
 {
 	//In case of error return -1
 	if(buf == NULL || size <= 0)
 		return -1;
+
+	//if(size > (256 - cbfifo_length(TX_Buffer)))
+	while( size > (256 - cbfifo_length(TX_Buffer)) );
+
 
 	//Enqueue to transmit buffer
 	if(cbfifo_enqueue(buf,size,TX_Buffer) != size)

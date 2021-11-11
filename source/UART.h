@@ -26,7 +26,7 @@
 
 
 //Parameters according to assignment
-#define STOP_BITS               (2)     // [1] : One Stop bit       | [2] : Two stop bits
+#define STOP_BITS               (1)     // [0] : One Stop bit       | [1] : Two stop bits
 #define DATA_SIZE				(0)     // [0] : 8-bit mode         | [1] : for 9-bit mode
 #define PARITY					(0)     // [0] : Parity is disabled | [1] : Parity is enabled
 #define BAUD_RATE               (38400) // Baud rate needed

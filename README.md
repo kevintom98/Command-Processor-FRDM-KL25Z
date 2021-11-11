@@ -21,4 +21,15 @@ Code for Assignment-6 for PES, ECEN-5813,  Fall 2021
     2. Press "Build" to build the code 
     3. Connect your FRDM KL25Z to your computer
     4. Press "Debug" to debug the code on FRDM KL25Z
+    
+    
+    
+## Terminal Parameters    
+ ![Terminal_Parametrs](/Terminal_Parameters.JPG)   
+ 
+ 
+## Serial Terminal Shot
+![Output](/Output.JPG)
+
+ 
  

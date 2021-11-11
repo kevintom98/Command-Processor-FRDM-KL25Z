@@ -6,8 +6,8 @@
 
 
 /*
- *This function TX_Buffers the cbfifo.c through different TX_Buffer cases.
- *Asserts are used for TX_Buffering. Program stops is there is a problem.
+ *This function tests the cbfifo.c through different cases.
+ *Asserts are used for testing. Program stops is there is a problem.
  *
  *Parameters:
  *	none

@@ -3,6 +3,9 @@
  *
  *  Created on: 09-Nov-2021
  *      Author: Kevin Tom, Kevin.Tom@colorado.edu
+ *
+ *
+ *  Header file for hexdump.c file
  */
 
 
@@ -13,7 +16,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+//STRIDE is used a hexdump parameter
 #define STRIDE            (16)
+//Maximum size user can give for HEX DUMP
 #define DUMP_MAX_SIZE     (640)
 
 

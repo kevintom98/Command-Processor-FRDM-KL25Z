@@ -228,6 +228,7 @@ void process_command(char *input)
     }
   }
 
+
   //If no handler is found print error message
   if(found == false)
   {
@@ -236,5 +237,6 @@ void process_command(char *input)
 		  printf("%c",*i);
 	  printf("\n\r");
   }
+
 
 }

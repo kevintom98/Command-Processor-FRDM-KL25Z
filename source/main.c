@@ -10,11 +10,6 @@
 #include "command_processor.h"
 
 
-
-//Baud rate setting
-#define BAUD_RATE 38400
-
-
 int main(void)
 {
 

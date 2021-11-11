@@ -1,5 +1,5 @@
 /*
- * init_UART.c
+ *  File name : UART.c
  *
  *  Created on: 04-Nov-2021
  *      Author: Kevin Tom
@@ -13,6 +13,7 @@
 
 
 #include <stdio.h>
+
 #include "UART.h"
 #include "cbfifo.h"
 
@@ -120,6 +121,7 @@ void UART0_IRQHandler(void)
 			// clear the error flags
 			UART0->S1 |= UART0_S1_OR_MASK | UART0_S1_NF_MASK |
 									UART0_S1_FE_MASK | UART0_S1_PF_MASK;
+
 			// read the data register to clear RDRF
 			ch = UART0->D;
 	}
@@ -147,6 +149,7 @@ void UART0_IRQHandler(void)
 		if(cbfifo_length(TX_Buffer) > 0)
 		{
 			cbfifo_dequeue(&ch, 1, TX_Buffer);
+
 			UART0->D = ch; //Put the data across UART line
 		}
 		else
@@ -166,16 +169,16 @@ void UART0_IRQHandler(void)
  * 	https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8
  *
  * Parameters:
- * 				 int handle -  stdout - (handle = 1)
- * 	  	  	  	  	  	  	   stderr - (handle = 2)
- * 	  	  	  	  	  	  	   In this case we are directing both to serial, so no need to
- * 	  	  	  	  	  	  	   take care of this
+ * 				  int handle -  stdout - (handle = 1)
+ * 	  	  	  	  	  	  	    stderr - (handle = 2)
+ * 	  	  	  	  	  	  	    In this case we are directing both to serial, so no need to
+ * 	  	  	  	  	  	  	    take care of this
  *                char *buf  -  start address of buffer to be written
  *                int size   -  number of characters to be written
  *
  * Returns:
  * 		-1 in case of error
- * 	  	 0 in case of sucess
+ * 	  	 0 in case of success
  * */
 int __sys_write(int handle, char *buf, int size)
 {
@@ -183,13 +186,15 @@ int __sys_write(int handle, char *buf, int size)
 	if(buf == NULL || size <= 0)
 		return -1;
 
-	//if(size > (256 - cbfifo_length(TX_Buffer)))
-	while( size > (256 - cbfifo_length(TX_Buffer)) );
+
+	//Checking if buffer is full
+	while( size > (MAX_SIZE - cbfifo_length(TX_Buffer)) );
 
 
 	//Enqueue to transmit buffer
 	if(cbfifo_enqueue(buf,size,TX_Buffer) != size)
 		return -1;
+
 
 	//Generating a transmit signal
 	//start transmitter if it isn't already running
@@ -219,11 +224,12 @@ int __sys_write(int handle, char *buf, int size)
  * 			None
  *
  * Returns:
- *         int - ASCII code of character written/0 in case of error
+ *         int - ASCII code of character written/ 0 in case of error
  * */
 int __sys_readc(void)
 {
 	char c;
+
 	//Wait till something is written into RX_Buffer, i.e, wait till use writes something
 	while((cbfifo_length(RX_Buffer)==0));
 

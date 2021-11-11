@@ -8,13 +8,14 @@
  *      This file has the hexdump function
  */
 
-
-#include "hexdump.h"
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
+
+#include "hexdump.h"
+
+
 
 
 
@@ -43,6 +44,9 @@ char int_to_hexchar(uint32_t x)
 
 /* This function prints the hexdump starting from an address till the
  * given length.
+ *
+ * Leveraged code from,
+ *  PES - ECEN: 5813 - Lecture 5 - Testing and Assignment 1 Review
  *
  *
  * Parameters:
@@ -73,7 +77,7 @@ void hexdump(int *start, size_t len)
 		printf("%04x_%04x",(start_addr & (0xFFFF0000)),(start_addr & (0x0000FFFF)));
 	    printf("  ");
 
-	    //Printing the memory content
+	    //Printing the memory content in hex
 	    for (int j=0; (j < STRIDE) && (i+j < len); j++)
 		{
 	    	printf("%c",int_to_hexchar((buf[i+j]) >> 4));
@@ -85,8 +89,8 @@ void hexdump(int *start, size_t len)
 		start_addr += STRIDE;
 
 		//Going to new line
-			printf("\r");
-			printf("\n");
+		printf("\r");
+		printf("\n");
 	 }
 }
 

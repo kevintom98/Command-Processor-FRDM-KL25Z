@@ -35,6 +35,7 @@
  * */
 void author_handler()
 {
+	//Printing author name
 	printf("\n\rKevin Tom\n\r");
 }
 
@@ -129,7 +130,8 @@ void command_processor_start()
 		printf("? ");
 		i= -1;
 
-		/**********Accumulator***********/
+
+		/*******************Accumulator**********************/
 		while(command[i] != '\r')
 		{
 			i++;
@@ -145,7 +147,8 @@ void command_processor_start()
 
 		}
 		command[i++] = '\0';
-		/*****************************/
+		/****************************************************/
+
 
 		//Calling process command function
 		process_command(command);
@@ -162,12 +165,10 @@ void command_processor_start()
  * argc and argv vectors and calls appropriate handling functions
  *
  * Parameters:
- * 	char *input - Input string from accumualtor
+ * 	char *input - Input string from accumulator
  *
  * Returns:
  * 	None
- *
- *
  * */
 void process_command(char *input)
 {
@@ -186,6 +187,7 @@ void process_command(char *input)
   int argc = 0;
 
 
+  //Setting argv array to '0'
   __builtin_memset(argv, 0, sizeof(argv));
 
 
@@ -195,7 +197,7 @@ void process_command(char *input)
 	  if((*p >= 48))
 	  {
 		  //if previous character is ' ' or '\0' or it is starting character
-		  if( (*(p-1) ==' ') || (p == input) || (*(p-1) =='\0'))
+		  if( (*(p-1) == ' ') || (p == input) || (*(p-1) == '\0'))
 		  {
 			  //Write the address to argv[argc]
 			  argv[argc] = p;
@@ -234,4 +236,5 @@ void process_command(char *input)
 		  printf("%c",*i);
 	  printf("\n\r");
   }
+
 }

@@ -70,7 +70,7 @@ void help_handler();
 static const command_table_t commands[] =
 {
 		{"author", author_handler,"\n\rauthor - This command will print the name of the author who wrote the command line\n\r"},
-		{"dump", dump_handler,"dump - This command will print Hexdump of memory(eg: dump start_addr end_addr ; dump 0 0x64)\n\r"},
+		{"dump", dump_handler,"dump   - This command will print Hexdump of memory(eg: dump start_addr end_addr ; dump 0 0x64)\n\r"},
 		{"help", help_handler," "}
 };
 /*****************************************************************************************************************************************/

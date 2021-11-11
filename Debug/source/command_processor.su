@@ -1,5 +1,5 @@
 command_processor.c:36:6:author_handler	8	static
-command_processor.c:59:6:dump_handler	24	static
-command_processor.c:93:6:help_handler	16	static
-command_processor.c:121:6:command_processor_start	112	static
-command_processor.c:172:6:process_command	88	static
+command_processor.c:60:6:dump_handler	24	static
+command_processor.c:94:6:help_handler	16	static
+command_processor.c:122:6:command_processor_start	112	static
+command_processor.c:173:6:process_command	88	static

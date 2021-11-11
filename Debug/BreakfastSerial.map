@@ -116,10 +116,12 @@ Discarded input sections
  .group         0x00000000        0xc ./source/UART.o
  .group         0x00000000        0xc ./source/UART.o
  .group         0x00000000        0xc ./source/UART.o
+ .group         0x00000000        0xc ./source/UART.o
  .text          0x00000000        0x0 ./source/UART.o
  .data          0x00000000        0x0 ./source/UART.o
  .bss           0x00000000        0x0 ./source/UART.o
  .debug_macro   0x00000000      0xab4 ./source/UART.o
+ .group         0x00000000        0xc ./source/cbfifo.o
  .group         0x00000000        0xc ./source/cbfifo.o
  .group         0x00000000        0xc ./source/cbfifo.o
  .group         0x00000000        0xc ./source/cbfifo.o
@@ -146,6 +148,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x5b3 ./source/cbfifo.o
  .debug_macro   0x00000000       0xd8 ./source/cbfifo.o
  .debug_macro   0x00000000       0x22 ./source/cbfifo.o
+ .debug_macro   0x00000000       0x10 ./source/cbfifo.o
  .debug_macro   0x00000000       0x3a ./source/cbfifo.o
  .debug_macro   0x00000000       0x26 ./source/cbfifo.o
  .debug_macro   0x00000000      0x329 ./source/cbfifo.o
@@ -183,8 +186,8 @@ Discarded input sections
  .debug_macro   0x00000000      0xab4 ./source/hexdump.o
  .debug_macro   0x00000000       0x10 ./source/hexdump.o
  .debug_macro   0x00000000      0x12e ./source/hexdump.o
+ .debug_macro   0x00000000       0xd8 ./source/hexdump.o
  .debug_macro   0x00000000      0x5b3 ./source/hexdump.o
- .debug_macro   0x00000000       0x10 ./source/hexdump.o
  .group         0x00000000        0xc ./source/main.o
  .group         0x00000000        0xc ./source/main.o
  .group         0x00000000        0xc ./source/main.o
@@ -216,7 +219,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x329 ./source/main.o
  .debug_macro   0x00000000       0x30 ./source/main.o
  .debug_macro   0x00000000     0x51e2 ./source/main.o
- .debug_macro   0x00000000       0x28 ./source/main.o
+ .debug_macro   0x00000000       0x2e ./source/main.o
  .group         0x00000000        0xc ./source/mtb.o
  .group         0x00000000        0xc ./source/mtb.o
  .group         0x00000000        0xc ./source/mtb.o
@@ -260,6 +263,7 @@ Discarded input sections
  .group         0x00000000        0xc ./source/test_cbfifo.o
  .group         0x00000000        0xc ./source/test_cbfifo.o
  .group         0x00000000        0xc ./source/test_cbfifo.o
+ .group         0x00000000        0xc ./source/test_cbfifo.o
  .text          0x00000000        0x0 ./source/test_cbfifo.o
  .data          0x00000000        0x0 ./source/test_cbfifo.o
  .bss           0x00000000        0x0 ./source/test_cbfifo.o
@@ -269,6 +273,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xd8 ./source/test_cbfifo.o
  .debug_macro   0x00000000      0x5b3 ./source/test_cbfifo.o
  .debug_macro   0x00000000       0x22 ./source/test_cbfifo.o
+ .debug_macro   0x00000000       0x10 ./source/test_cbfifo.o
  .group         0x00000000        0xc ./CMSIS/system_MKL25Z4.o
  .group         0x00000000        0xc ./CMSIS/system_MKL25Z4.o
  .group         0x00000000        0xc ./CMSIS/system_MKL25Z4.o
@@ -1156,44 +1161,45 @@ OUTPUT(BreakfastSerial.axf elf32-littlearm)
  .debug_ranges  0x00000238       0x10 ./source/test_cbfifo.o
  .debug_ranges  0x00000248       0x18 ./CMSIS/system_MKL25Z4.o
 
-.debug_macro    0x00000000     0xd5a8
+.debug_macro    0x00000000     0xd4e7
  .debug_macro   0x00000000       0x29 ./startup/startup_mkl25z4.o
  .debug_macro   0x00000029      0xab4 ./startup/startup_mkl25z4.o
- .debug_macro   0x00000add       0xc7 ./source/UART.o
- .debug_macro   0x00000ba4       0x10 ./source/UART.o
- .debug_macro   0x00000bb4      0x12e ./source/UART.o
- .debug_macro   0x00000ce2       0xd8 ./source/UART.o
- .debug_macro   0x00000dba      0x5b3 ./source/UART.o
- .debug_macro   0x0000136d       0x3f ./source/UART.o
- .debug_macro   0x000013ac       0x3a ./source/UART.o
- .debug_macro   0x000013e6       0x26 ./source/UART.o
- .debug_macro   0x0000140c      0x329 ./source/UART.o
- .debug_macro   0x00001735       0x30 ./source/UART.o
- .debug_macro   0x00001765     0x51e2 ./source/UART.o
- .debug_macro   0x00006947       0x28 ./source/UART.o
- .debug_macro   0x0000696f       0x22 ./source/UART.o
- .debug_macro   0x00006991       0xc7 ./source/cbfifo.o
- .debug_macro   0x00006a58       0x22 ./source/cbfifo.o
- .debug_macro   0x00006a7a       0x3f ./source/cbfifo.o
- .debug_macro   0x00006ab9     0x51e2 ./source/cbfifo.o
- .debug_macro   0x0000bc9b       0xa6 ./source/command_processor.o
- .debug_macro   0x0000bd41       0x10 ./source/command_processor.o
- .debug_macro   0x0000bd51       0x7f ./source/hexdump.o
- .debug_macro   0x0000bdd0       0x16 ./source/hexdump.o
- .debug_macro   0x0000bde6       0xd2 ./source/hexdump.o
- .debug_macro   0x0000beb8       0xb4 ./source/main.o
- .debug_macro   0x0000bf6c       0x10 ./source/main.o
- .debug_macro   0x0000bf7c       0x2f ./source/mtb.o
- .debug_macro   0x0000bfab       0x82 ./source/mtb.o
- .debug_macro   0x0000c02d       0x10 ./source/mtb.o
- .debug_macro   0x0000c03d       0x11 ./source/semihost_hardfault.o
- .debug_macro   0x0000c04e       0x91 ./source/sysclock.o
- .debug_macro   0x0000c0df       0x34 ./source/sysclock.o
- .debug_macro   0x0000c113       0x89 ./source/test_cbfifo.o
- .debug_macro   0x0000c19c       0x16 ./source/test_cbfifo.o
- .debug_macro   0x0000c1b2       0x94 ./CMSIS/system_MKL25Z4.o
- .debug_macro   0x0000c246       0x10 ./CMSIS/system_MKL25Z4.o
- .debug_macro   0x0000c256     0x1352 ./CMSIS/system_MKL25Z4.o
+ .debug_macro   0x00000add       0xc6 ./source/UART.o
+ .debug_macro   0x00000ba3       0x10 ./source/UART.o
+ .debug_macro   0x00000bb3      0x12e ./source/UART.o
+ .debug_macro   0x00000ce1       0xd8 ./source/UART.o
+ .debug_macro   0x00000db9      0x5b3 ./source/UART.o
+ .debug_macro   0x0000136c       0x3f ./source/UART.o
+ .debug_macro   0x000013ab       0x3a ./source/UART.o
+ .debug_macro   0x000013e5       0x26 ./source/UART.o
+ .debug_macro   0x0000140b      0x329 ./source/UART.o
+ .debug_macro   0x00001734       0x30 ./source/UART.o
+ .debug_macro   0x00001764     0x51e2 ./source/UART.o
+ .debug_macro   0x00006946       0x2e ./source/UART.o
+ .debug_macro   0x00006974       0x22 ./source/UART.o
+ .debug_macro   0x00006996       0x10 ./source/UART.o
+ .debug_macro   0x000069a6       0xc0 ./source/cbfifo.o
+ .debug_macro   0x00006a66       0x22 ./source/cbfifo.o
+ .debug_macro   0x00006a88       0x3f ./source/cbfifo.o
+ .debug_macro   0x00006ac7     0x51e2 ./source/cbfifo.o
+ .debug_macro   0x0000bca9       0xa6 ./source/command_processor.o
+ .debug_macro   0x0000bd4f       0x10 ./source/command_processor.o
+ .debug_macro   0x0000bd5f       0x79 ./source/hexdump.o
+ .debug_macro   0x0000bdd8       0x10 ./source/hexdump.o
+ .debug_macro   0x0000bde8       0x16 ./source/hexdump.o
+ .debug_macro   0x0000bdfe       0xae ./source/main.o
+ .debug_macro   0x0000beac       0x10 ./source/main.o
+ .debug_macro   0x0000bebc       0x2f ./source/mtb.o
+ .debug_macro   0x0000beeb       0x82 ./source/mtb.o
+ .debug_macro   0x0000bf6d       0x10 ./source/mtb.o
+ .debug_macro   0x0000bf7d       0x11 ./source/semihost_hardfault.o
+ .debug_macro   0x0000bf8e       0x91 ./source/sysclock.o
+ .debug_macro   0x0000c01f       0x34 ./source/sysclock.o
+ .debug_macro   0x0000c053       0x88 ./source/test_cbfifo.o
+ .debug_macro   0x0000c0db       0x16 ./source/test_cbfifo.o
+ .debug_macro   0x0000c0f1       0x94 ./CMSIS/system_MKL25Z4.o
+ .debug_macro   0x0000c185       0x10 ./CMSIS/system_MKL25Z4.o
+ .debug_macro   0x0000c195     0x1352 ./CMSIS/system_MKL25Z4.o
 
 .debug_line     0x00000000     0x2600
  .debug_line    0x00000000      0x1e7 ./startup/startup_mkl25z4.o
@@ -1208,28 +1214,28 @@ OUTPUT(BreakfastSerial.axf elf32-littlearm)
  .debug_line    0x0000194a      0x971 ./source/test_cbfifo.o
  .debug_line    0x000022bb      0x345 ./CMSIS/system_MKL25Z4.o
 
-.debug_str      0x00000000    0x30f94
+.debug_str      0x00000000    0x30f96
  .debug_str     0x00000000     0x3201 ./startup/startup_mkl25z4.o
                                0x3236 (size before relaxing)
- .debug_str     0x00003201    0x265d1 ./source/UART.o
-                              0x2961e (size before relaxing)
- .debug_str     0x000297d2      0x12d ./source/cbfifo.o
+ .debug_str     0x00003201    0x265f0 ./source/UART.o
+                              0x2963d (size before relaxing)
+ .debug_str     0x000297f1      0x120 ./source/cbfifo.o
                               0x29302 (size before relaxing)
- .debug_str     0x000298ff      0x196 ./source/command_processor.o
+ .debug_str     0x00029911      0x196 ./source/command_processor.o
                                0x4aeb (size before relaxing)
- .debug_str     0x00029a95       0x36 ./source/hexdump.o
+ .debug_str     0x00029aa7       0x36 ./source/hexdump.o
                                0x498a (size before relaxing)
- .debug_str     0x00029acb       0x64 ./source/main.o
-                              0x28ece (size before relaxing)
- .debug_str     0x00029b2f      0x532 ./source/mtb.o
+ .debug_str     0x00029add       0x54 ./source/main.o
+                              0x28ed0 (size before relaxing)
+ .debug_str     0x00029b31      0x532 ./source/mtb.o
                                0x3342 (size before relaxing)
- .debug_str     0x0002a061       0x1f ./source/semihost_hardfault.o
+ .debug_str     0x0002a063       0x1f ./source/semihost_hardfault.o
                                0x2e2f (size before relaxing)
- .debug_str     0x0002a080       0x38 ./source/sysclock.o
+ .debug_str     0x0002a082       0x38 ./source/sysclock.o
                               0x28e15 (size before relaxing)
- .debug_str     0x0002a0b8       0xc3 ./source/test_cbfifo.o
-                               0x49f9 (size before relaxing)
- .debug_str     0x0002a17b     0x6e19 ./CMSIS/system_MKL25Z4.o
+ .debug_str     0x0002a0ba       0xc3 ./source/test_cbfifo.o
+                               0x4a06 (size before relaxing)
+ .debug_str     0x0002a17d     0x6e19 ./CMSIS/system_MKL25Z4.o
                               0x2fca7 (size before relaxing)
 
 .comment        0x00000000       0x79

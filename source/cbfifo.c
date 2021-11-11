@@ -12,7 +12,7 @@
 #include <MKL25Z4.h>
 
 
-#define MAX_SIZE 256 //Max size of the circular buffer is 128 bytes
+
 
 
 //Structure for the circular buffer

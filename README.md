@@ -1,5 +1,4 @@
-# PES-Assignment-6
-Code for Assignment-6 for PES, ECEN-5813,  Fall 2021
+# Command Processor for FRDM KL25Z
 ****************************************************************************************************************   
 **Author**            - Kevin Tom  
 **Development Board** - FRDM KL25Z (MKL25Z128VLK4)  
